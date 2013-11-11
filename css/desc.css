@@ -1,0 +1,56 @@
+.container
+			{
+		    margin: auto;
+		    width: 600px;
+		    height: 900px;
+		    min-width:400px;
+		    min-height:700px;
+		    top: 0;
+		    bottom: 0;
+		    right: 0;
+		    left: 0;
+		    padding:50px;
+		    text-align:center;
+		    border-style: none;
+		    border-width: small;
+		    background-color:#4C6A77;
+		    color:#451989;
+			}
+			
+			.inner_container
+			{
+		    margin: auto;
+		    top: 0;
+		    bottom: 0;
+		    right: 0;
+		    left: 0;
+		    padding:50px;
+		    border-style: none;
+		    border-width: small;
+		    background-color:#b8b6ba;
+		    text-align:justify;
+		    color:#451989;
+		    font: 17px arial,sans-serif; 
+			}
+
+            p
+            {
+            	display:inline;
+            }
+            
+            h1
+            {
+            	text-align:center;
+            }
+            
+            label
+            {
+            	float:left;
+            }
+            
+            input, select
+            {
+            	width:200px;
+            	display:inline;
+            	float:right;
+            }

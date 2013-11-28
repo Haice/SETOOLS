@@ -6,21 +6,23 @@ class Employers extends CI_Controller
  	{
  		parent::__construct();
  		$this->load->model('employer','',TRUE);
+		$this->load->model('sector','',TRUE);
 	}
 	
-	public function registration_form()
+	public function form()
 	{
-		$this->load->view('registeremployer');
+		$sectors = new sector();
+		$data['sectors'] = $sectors->SelectAll();
+		$this->load->view('registeremployer', $data);
 	}
 
 	public function logout()
 	{
 		$this->session->unset_userdata('signed_in');
-   		session_destroy();
    		redirect('login', 'refresh');
 	}
 	
-	public function registration()
+	public function register()
  	{
  		// Load form validation library
  		$this->load->library('form_validation');
@@ -73,8 +75,43 @@ class Employers extends CI_Controller
 				$session_array = array('id' => $userID, 'username' => $userTag);
        			$this->session->set_userdata('signed_in', $session_array);
 				
-				redirect('dashboard', 'refresh');
+				redirect('employers/dashboard', 'refresh');
+			}
+			else  
+			{ // Registration Failed... Send info back to login page
+				$data['register_failed'] = 'true';
+				$this->load->view('registeremployer', $data);
 			}
   		}
- 	}	
+ 	}
+
+	public function dashboard()
+	{
+		if($this->session->userdata('signed_in'))
+	   	{
+			$session_data = $this->session->userdata('signed_in');
+	     	$data['employer'] = new employer($session_data['id']);
+	     	$this->load->view('employer_search', $data);
+	   	}
+	   	else
+	   	{
+			//If no session, redirect to login page
+	     	redirect('login', 'refresh');
+	   	}
+	}
+	
+	public function adverts()
+	{
+		if($this->session->userdata('signed_in'))
+	   	{
+			$session_data = $this->session->userdata('signed_in');
+	     	$data['employer'] = new employer($session_data['id']);
+	     	$this->load->view('employer_advert', $data);
+	   	}
+	   	else
+	   	{
+			//If no session, redirect to login page
+	     	redirect('login', 'refresh');
+	   	}
+	}	
 }

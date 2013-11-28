@@ -157,13 +157,7 @@ Class Employer extends CI_Model
 
 	    $query = $this -> db -> get();
 
-	    if($query -> num_rows() == 1)
-	    {
-	      	return $query->row();
-		}
-		else return -1;
-			
-		
+		return $query -> num_rows() == 1 ? $query->row() : null;
 	}
 	
 /******************************* INSERT FUNCTIONS ******************************************/
@@ -191,14 +185,19 @@ Class Employer extends CI_Model
 		, 'town'=> $town,'address1' => $address1, 'address2'=> $address2,
 		'postcode'=> $postcode,'email' => $email, 'phone_number'=> $phone_number,
 		'fax'=> $fax);
-		$this -> db -> insert('employer', $data);
 		
-		if($this->db->affected_rows() > 0)
-		{
-			return $this->db->insert_id();
-		}
-		else return -1;
+		$tryInsert = $this -> db -> insert('employer', $data);
+		
+		return ($this->db->affected_rows() > 0 && $tryInsert)? $this->db->insert_id() : -1;
 	}	
-	
+
+/***************************** DELETE FUNCTIONS ******************************************/
+
+	function Delete($id)
+	{
+		$this-> db -> delete('employer', array('idEmployer' => $id));
+		return $this->db->affected_rows();
+	}
+		
 }
 ?>

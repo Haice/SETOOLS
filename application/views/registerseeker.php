@@ -3,23 +3,32 @@
 	<head>
 		<title>Register as a job seeker</title>
 		<link rel="stylesheet" href='<?= base_url().'css/desc.css'; ?>' />
+		
+		<style>
+		    .container
+		    {
+		        min-height:750px;
+		    }
+			.inner_container
+			{
+		       min-height:700px;
+			}
+		</style>
 	</head>
+	
 	<body>
 		
      <div class="container">
 	  <div class="inner_container">
 		<div class="basic_details">
 	        
-	        <h1>Create Job Seeker Accountcount</h1>
-	        <br />
+	        <h1>Create Job Seeker Account</h1>
 		    <p> Please enter details you will be using to log in...</p>		
 		    
 		    <br />
 		    <br />
-			
-			<?php echo validation_errors(); ?>
-   			<?php echo form_open('job_seekers/registration'); ?>
-				
+
+   			<?php echo form_open('jobseekers/register'); ?>
 			<label>Email Address</label>
 			<input type="text" name="email" autocomplete="off"/>
 			<br />
@@ -63,37 +72,37 @@
 		    <br />
 			
 			<label>First Name</label>
-			<input type="text" name="first_name" autocomplete="off"/>
+			<input type="text" name="first_name"/>
 			<br />
 			<br />
 			
 			<label>Surname</label>
-			<input type="text" name="surname" autocomplete="off"/>
+			<input type="text" name="surname"/>
 			<br />
 			<br />
 			
 			<label>Date Of Birth</label>
-			<input type="date" placeholder="DD/MM/YYY" name="dob" autocomplete="off"/>
+			<input type="date" placeholder="DD/MM/YYY" name="dob"/>
 			<br />
 			<br />
 			
 			<label>Address Line1</label>
-			<input type="text" name="address_line1" autocomplete="off"/>
+			<input type="text" name="address_line1"/>
 			<br />
 			<br />
 		
 			<label>Address Line2</label>
-			<input type="text" name="address_line2" autocomplete="off"/>
+			<input type="text" name="address_line2"/>
 			<br />
 			<br />
 			
 			<label>Town</label>
-			<input type="text" name="town" autocomplete="off"/>
+			<input type="text" name="town"/>
 			<br />
 			<br />
 			
 			<label>Postcode</label>
-			<input type="text" name="postode" autocomplete="off"/>
+			<input type="text" name="postode"/>
 			<br />
 			<br />
 			
@@ -351,16 +360,41 @@
 
            <br />
            <br />
-        
+  	 	   
+  	 	   <label>Phone Number</label>
+		   <input type="text" name="phone"/>
+		   <br />
+		   <br />
+		   
+		   <label>Are you Eligible to work in the UK?</label>
+		   <select style="width:50px;" name="title">
+				<option value="0">No</option>
+			    <option value="1">Yes</option>
+		   </select>
+		   <br />
+		   <br />
+		   
+		   <label>Profile Summary</label><br />
+		   <textarea name="summary" rows="7" cols="60" placeholder="Brief Summary about yourself... Tell employers who you are, what you have to offer and what it is that you want."></textarea>
+           
            <hr />
            
-           <input style="width:100px" type="submit" value="Continue" /> 
-           <input style="width:100px;" type="reset" value="Clear"/>
+           <input style=" padding: 4px; width:100px" type="submit" value="Continue" /> 
+           <input style=" padding: 4px; width:100px;" type="reset" value="Clear"/>
            </form>
          </div>		
 		
 	  </div>
 	</div>
-			
+<?php
+	/** Display errors resulting from login attempt **/
+		$val_error = preg_replace("/[\\n\\r]+/", " ", strip_tags(validation_errors()));
+		
+		if ($val_error != null)
+			echo "<script> alert('$val_error'); </script>";
+		
+		if(isset($register_failed))
+			echo "<script> alert('Duplicate Email... Existing Users Should Please Use Login or Forgot Password'); </script>";
+?>
 	</body>
 </html>

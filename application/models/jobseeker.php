@@ -18,6 +18,7 @@ Class JobSeeker extends CI_Model
 	private $phone_number;
 	private $eligibility_to_work;
 	private $description;
+	private $interests;
 	
 	function __construct($idJobSeeker = null)
 	{
@@ -31,7 +32,7 @@ Class JobSeeker extends CI_Model
 			$this->id = $idJobSeeker;
 			
 			$this -> db -> select('idJobSeeker, username, title, first_name, last_name, date_of_birth,address1,
-			 address2, town, postcode, country, email, phone_number, eligibility_to_work, description');
+			 address2, town, postcode, country, email, phone_number, eligibility_to_work, description, interests');
 		    $this -> db -> from('job_seeker'); 
 		    $this -> db -> where('idJobSeeker', $idJobSeeker);
 		    
@@ -56,6 +57,7 @@ Class JobSeeker extends CI_Model
 				$this->phone_number= $row->phone_number;
 				$this->eligibility_to_work= $row->eligibility_to_work;
 				$this->description= $row->description;
+				$this->interests= $row->interests;
 		    }
 		}
 
@@ -157,13 +159,18 @@ Class JobSeeker extends CI_Model
     {
       return $this->description;
     } // getDescription()
+    
+    function getInterests()
+    {
+      return $this->interests;
+    } // getInterests()
 
 	function Login($user, $pass)
 	{
 		$shaPassword = sha1($pass);
 		
 		$this -> db -> select('idJobSeeker, username, title, first_name, last_name, 
-		date_of_birth,address1, address2, town, postcode, country, email, phone_number, eligibility_to_work, description');
+		date_of_birth,address1, address2, town, postcode, country, email, phone_number, eligibility_to_work');//, description');
 		$this -> db -> from('job_seeker');
 		$this -> db -> where('username', $user);
 		$this -> db -> where('password', $shaPassword);
@@ -207,14 +214,37 @@ Class JobSeeker extends CI_Model
 		'last_name' => $last_name, 'date_of_birth'=> $date_of_birth
 		, 'address1'=> $address1,'address2' => $address2, 'town'=> $town,
 		'postcode' => $postcode,'country'=> $country,'email' => $email, 'phone_number'=> $phone_number,
-		'eligibility_to_work' => $eligibility_to_work,'description'=> $description);
-		$this -> db -> insert('job_seeker', $data);
+		'eligibility_to_work' => $eligibility_to_work,'description' => $description);
 		
-		if($this->db->affected_rows() > 0)
-		{
-			return $this->db->insert_id();
-		}
-		else return -1;
+		$tryInsert = $this -> db -> insert('job_seeker', $data);
+
+		return ($this->db->affected_rows() > 0 && $tryInsert)? $this->db->insert_id() : -1;
+	}
+	
+/***************************** DELETE FUNCTIONS ******************************************/
+
+	function Delete($id)
+	{
+		$this-> db -> delete('job_seeker', array('idJobSeeker' => $id));
+		return $this->db->affected_rows();
+	}
+	
+/***************************** UPDATE FUNCTIONS ******************************************/
+
+	function UpdateDescription($id, $data)
+	{
+		$this->db->where('idJobSeeker', $id);
+		$this->db->update('job_seeker', array('description'=> $data));
+		
+		return $this->db->affected_rows() > 0 ? 1 : -1;
+	}
+
+	function UpdateInterest($id, $data)
+	{
+		$this->db->where('idJobSeeker', $id);
+		$this->db->update('job_seeker', array('interests'=> $data));
+		
+		return $this->db->affected_rows() > 0 ? 1 : -1;
 	}
 }
 ?>

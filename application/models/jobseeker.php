@@ -221,6 +221,28 @@ Class JobSeeker extends CI_Model
 		return ($this->db->affected_rows() > 0 && $tryInsert)? $this->db->insert_id() : -1;
 	}
 	
+		/*
+	 * 
+	 */
+	 public function record_count()
+	 {
+        return $this->db->count_all('job_seeker');
+     }
+ 
+     public function fetch_seekers($limit, $start) 
+     {
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('job_seeker');
+ 
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return false;
+     }
+	
 /***************************** DELETE FUNCTIONS ******************************************/
 
 	function Delete($id)

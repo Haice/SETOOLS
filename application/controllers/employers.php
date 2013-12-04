@@ -210,6 +210,7 @@ class Employers extends CI_Controller
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $data["results"] = $this->job_ad->fetch_jobs($search_config["per_page"], $page);
         $data["links"] = $this->pagination->create_links();
+		//TODO $data["from"] = "employer";
  		
  		// load view with search results
         $this->load->view("searchresults", $data);

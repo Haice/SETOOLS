@@ -7,6 +7,8 @@ class Employers extends CI_Controller
  		parent::__construct();
  		$this->load->model('employer','',TRUE);
 		$this->load->model('sector','',TRUE);
+		$this->load->model('job_ad','',TRUE);
+		$this->load->model('job_title','',TRUE);
 	}
 	
 	public function form()
@@ -89,6 +91,7 @@ class Employers extends CI_Controller
 	{
 		if($this->session->userdata('signed_in'))
 	   	{
+	   		
 			$session_data = $this->session->userdata('signed_in');
 	     	$data['employer'] = new employer($session_data['id']);
 	     	$this->load->view('employer_search', $data);
@@ -104,8 +107,10 @@ class Employers extends CI_Controller
 	{
 		if($this->session->userdata('signed_in'))
 	   	{
+	   		$sectors = new sector();
 			$session_data = $this->session->userdata('signed_in');
 	     	$data['employer'] = new employer($session_data['id']);
+			$data['sectors'] = $sectors->SelectAll();
 	     	$this->load->view('employer_advert', $data);
 	   	}
 	   	else
@@ -113,5 +118,81 @@ class Employers extends CI_Controller
 			//If no session, redirect to login page
 	     	redirect('login', 'refresh');
 	   	}
-	}	
+	}
+	
+	public function createAdvert()
+	{
+		$sect = new sector();
+		$sectors = $sect->SelectAll();
+		// Load form validation library
+ 		$this->load->library('form_validation');
+  		
+  		/***** Set Form Validation Rules *****/
+  		$this->form_validation->set_rules('title', 'title', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('location', 'location', 'trim|required|min_length[1]|xss_clean');
+  		$this->form_validation->set_rules('start_date', 'start date', 'trim|required|min_length[1]|xss_clean');
+  		$this->form_validation->set_rules('end_date', 'end date', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('salary_value', 'salary amount', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('salary_type', 'salary type', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('contract', 'contract type', 'trim|required|min_length[1]|xss_clean');
+		//TODO Discuss with Team members $this->form_validation->set_rules('sector', 'sector', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('education', 'education', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('experience', 'experience', 'trim|required|min_length[1]|xss_clean');
+		$this->form_validation->set_rules('job_description', 'job description', 'trim|required|min_length[1]|xss_clean');
+		/*************************************/
+
+  		if($this->form_validation->run() == FALSE)
+  		{
+  			// If any rule is defaulting... redirect to cv page
+  			$session_data = $this->session->userdata('signed_in');
+	     	$data['employer'] = new employer($session_data['id']);
+			$data['sectors'] = $sectors;
+			$data['message'] = "Please Ensure the form is filled properly";
+		    $this->load->view('employer_advert', $data);
+  		}
+  		else
+  		{ // No defaulting rule... Try to insert user's details into the database
+  		
+  		  	// First insert new job title and retrieve its ID for Job Advert insert operation
+  		  	$job_id = $this->job_title->Insert
+		  	(
+		  		$this->input->post('title'),
+		  		$this->input->post('user_sector')
+		  	);
+		  	//
+		  
+   			$result = $this->job_ad->Insert
+   			(
+   				$this->input->post('start_date'),
+	 			$this->input->post('end_date'),
+	 			$this->input->post('location'),
+	 			$this->input->post('job_description'),
+	 			$this->input->post('salary_value'),
+	 			$this->input->post('salary_type'),
+				$this->input->post('education'),
+	 			$this->input->post('experience'),
+	 			$this->input->post('contract'),
+	 			$this->input->post('user_id'),
+	 			$this->input->post($job_id)
+			);
+			
+			if ($result != -1)
+			{
+				// Advert Created Successfully Redirect to Create Advert Page
+				$session_data = $this->session->userdata('signed_in');
+	     		$data['employer'] = new employer($session_data['id']);
+				$data['sectors'] = $sectors;
+				$data['message'] = "Operation Successful... Your Job Advert is Now Available to Jobseekers";
+				$this->load->view('employer_advert', $data);
+			}
+			else  
+			{ // Failed to Create Job Advert... Send info back to login page
+				$session_data = $this->session->userdata('signed_in');
+	     		$data['employer'] = new employer($session_data['id']);
+				$data['sectors'] = $sectors;
+				$data['message'] = "Unable to Create Advert at this time... Please Try Again Later";
+				$this->load->view('employer_advert', $data);
+			}
+  		}
+	}
 }

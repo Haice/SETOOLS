@@ -89,13 +89,9 @@ Class job_title extends CI_Model
 	{
 
 		$data = array( 'name'=> $name, 'idSector' =>$idSector);
-		$this -> db -> insert('job_title', $data);
+		$tryInsert = $this -> db -> insert('job_title', $data);
 		
-		if($this->db->affected_rows() > 0)
-		{
-			return $this->db->insert_id();
-		}
-		else return -1;
+		return ($this->db->affected_rows() > 0 && $tryInsert)? $this->db->insert_id() : -1;
 	}		
 
 /***************************** DELETE FUNCTIONS ******************************************/

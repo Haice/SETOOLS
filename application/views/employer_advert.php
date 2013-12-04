@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Manage Job Adverts</title>
+		<title>Create Job Adverts</title>
 		<link rel="stylesheet" href='<?= base_url().'css/style.css'; ?>' />
 	</head>
 	
@@ -13,85 +13,102 @@
   				<li><a class="selected" title="Manage Job Adverts" href="#"><strong> Job Adverts </strong></a></li>
 			</ul>
 			<div class="tabContent">
-				<h2 align="center">Manage Job Adverts</h2>
+				<h2 align="center">Create Job Adverts</h2>
 				<div class="container">
-					<form name="input" action="" method="get">
-						<div class="left">
-							Job Title: <input type="text" name="keyword"/><br /><br />
-							
-							Location: <input type="text" name="location" placeholder="E.g. Surbiton, Surrey UK"/><br /><br />
-							
-							Job Description: <input type="text" name="job"/><br /><br />
-							
-							<div style="float: left;">Salary: </div>
-							<div style="text-align: right;">
-								<input style="width:65px;" type="text" name="min_salary" placeholder="Min" /> -
-								<input style="width:65px;" type="text"name="max_salary" placeholder="Max" />
+					<?php echo form_open('employers/createAdvert'); ?>
+						<div class="left" style="margin: 0 50px 0 0;">
+							<div style="float: left;">
+							Job Title: <input style="width: 300px;" type="text" name="title"/><br /><br />
+							Location: <input style="width: 300px;" type="text" name="location" placeholder="E.g. Surbiton, Surrey UK"/>
 							</div>
+							<div class="clear"><br /></div>
+							<div style="float: left;">
+							Start Date: <input type="date" name="start_date" placeholder="MM/DD/YYYY" />
+							</div>
+							<div class="clear"><br /></div>
+							
+							<div style="float: left;">
+							End Date: <input type="date" name="end_date" placeholder="MM/DD/YYYY" />
+							</div>
+							<div class="clear"><br /></div>
+							
+							<div style="float: left;">
+							Salary: <input style="width: 100px;" type="text" name="salary_value"/>
 							<span style="color:black;">
-	   		   					<input type="checkbox" name="salary" value="Hourly">Hourly
-               					<input type="checkbox" name="salary" value="Daily">Daily
-               					<input type="checkbox" name="salary" value="Annually">Annually<br />
-           					</span><br/>
-            					   		
-	   						<div style="float: left;">Contract Type: </div>
-	   						<div style="text-align: right;">
-	   						<span style="color:black;">
-	   		   					<input type="checkbox" name="contract" value="Part_time">Part-time<br />
-				               	<input type="checkbox" name="contract" value="Temporary">Temporary
-				               	<input type="checkbox" name="contract" value="Permanent">Permanent
+	   		   					<input type="radio" name="salary_type" value="Hourly">Hourly
+               					<input type="radio" name="salary_type" value="Daily">Daily
+               					<input type="radio" name="salary_type" value="Annually">Annually<br />
+           					</span></div>
+							<div class="clear"><br /></div>
+							
+							<div style="float: left;">
+							Contract Type:
+							<span style="color:black;">
+	   		   					<input type="radio" name="contract" value="Part_time">Part-time
+				               	<input type="radio" name="contract" value="Temporary">Temporary
+				               	<input type="radio" name="contract" value="Permanent">Permanent
 				            </span></div>
+							<div class="clear"><br /></div>
 						</div>
 						<div class="middle">
-							<span id="section">Sector</span>
-	   		   				<span style="color: black;">
-					   		    <input type="checkbox" name="sector" value="Finance">Finance<br />
-				                <input type="checkbox" name="sector" value="Aviation">Aviation<br /> 
-				                <input type="checkbox" name="sector" value="Consultancy">Consultancy<br />
-				                <input type="checkbox" name="sector" value="Education">Education<br /> 
-				               	<input type="checkbox" name="sector" value="IT">Information Technology<br />
-				               	<input type="checkbox" name="sector" value="Engineering">Engineering<br /> 
-				               	<input type="checkbox" name="sector" value="Management">Management<br />
-				                <input type="checkbox" name="sector" value="Marketing">Marketing<br /> 
-				               	<input type="checkbox" name="sector" value="Recruitment">Recruitment<br />
-				               	<input type="checkbox" name="sector" value="Retail">Retail<br /> 
-				               	<input type="checkbox" name="sector" value="Sales">Sales<br />
-				               	<input type="checkbox" name="sector" value="Science">Science<br /> 
-							</span><br />
-               				
-               				<span id="section">Educational level</span>
-               				<select name="Educational level">
+							Sector:<br />
+							<span style="color: black;">
+								<?php
+									foreach ($sectors as $sector)
+									{
+										echo "<input type='radio' name='sector' value='$sector->idSector'>$sector->name<br />
+								";
+									}
+								?>
+	   		   				</span><br />
+						</div>
+						<div class="left" style="margin: 0; text-align: left;">
+							<span id="section">Educational level</span>
+               				<select name="education">
                					<option value="">Choose...</option>
-			                 	<option value="postgrad">Postgraduate Qualification</option>
-			                 	<option value="bsc">Bachelors degree</option>
-			                 	<option value="vocational">Vocational qualification</option>
-			                 	<option value="high">High/Secondary school</option>
+			                 	<option value="Post Graduate">Postgraduate Qualification</option>
+			                 	<option value="Bsc.">Bachelors degree</option>
+			                 	<option value="Vocational">Vocational qualification</option>
+			                 	<option value="High School">High/Secondary school</option>
 							</select>
-						</div>
-						<div class="right">
-							<span id="section">Minimum work experience</span>
+							<br /><br />
+							<span id="section">Minimum Experience</span>
             	  			<span style="color:black;">
-            	  				<input type="radio" name="experience" value="none">None<br />
-								<input type="radio" name="experience" value="one">1 Year<br />
-								<input type="radio" name="experience" value="two">2 Years<br />
-								<input type="radio" name="experience" value="three">3 Years<br />
-								<input type="radio" name="experience" value="four">4 Years<br />
-								<input type="radio" name="experience" value="five">5 Years<br />
-								<input type="radio" name="experience" value="six">6 Years<br />
-								<input type="radio" name="experience" value="seven">7-10 Years<br />
-								<input type="radio" name="experience" value="eleven">11-15 Years<br />
-								<input type="radio" name="experience" value="fifteen">15+ Years<br />
-							</span><br />
+            	  				<input type="radio" name="experience" value="">None<br />
+								<input type="radio" name="experience" value="1">1 Year<br />
+								<input type="radio" name="experience" value="2">2 Years<br />
+								<input type="radio" name="experience" value="3">3 Years<br />
+								<input type="radio" name="experience" value="4">4 Years<br />
+								<input type="radio" name="experience" value="5">5 Years<br />
+								<input type="radio" name="experience" value="6">6 Years<br />
+								<input type="radio" name="experience" value="7">7 Years<br />
+								<input type="radio" name="experience" value="8">8 Years<br />
+								<input type="radio" name="experience" value="9">9 Years<br />
+								<input type="radio" name="experience" value="10">10+ Years
+							</span>
 						</div>
-						
 						<div class="clear"></div>
-						
+						<br />
+						<div align="center">
+						<span class="clear" id="section">Job Description</span>
+						<textarea name="job_description" rows="10" cols="110" placeholder="Brief description of the duties and responsibilities expected of the applicant... Additional requirements and person specifications can also be included here."></textarea>
+						</div><br />
+						<input type="hidden" name="user_id" value="<?php echo $employer->getId() ?>" />
+						<input type="hidden" name="user_sector" value="<?php echo $employer->getSector() ?>" />
 						<div style="margin-right: 30px;" align="right">
 							<input style="padding: 4px; width:100px;" type="reset" value="Clear"/>	
-							<input style="padding: 4px; width:100px" name="search" type="submit" value="Search" />
+							<input style="padding: 4px; width:100px" name="search" type="submit" value="Create" />
 						</div>
 					</form>
 				</div>
 			</div>
 	  	</div>
+	  	<?php
+	  		if (isset($message))
+			{
+				echo "<script>
+					  	alert('$message');
+					  </script>";
+			}
+		?>
 	</body>

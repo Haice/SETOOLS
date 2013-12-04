@@ -1,5 +1,5 @@
 /**
- * @author Baldor Oloruntoba
+ * @author Oloruntoba Ojo
  */
 $(document).ready(function()
 {

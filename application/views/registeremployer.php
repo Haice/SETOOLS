@@ -107,7 +107,7 @@
 				<?php
 					foreach ($sectors as $sector)
 					{
-						echo "<option value='$sector->name'>$sector->name</option>";
+						echo "<option value='$sector->idSector'>$sector->name</option>";
 					}
 				?>	
 		    </select></p>

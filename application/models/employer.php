@@ -27,7 +27,7 @@ Class Employer extends CI_Model
 		{
 			$this->id = $idEmployer;
 			
-			$this -> db -> select('idEmployer, first_name, last_name, organisation_name, sector, town,address1, address2, postcode, email, phone_number, fax');
+			$this -> db -> select('idEmployer, first_name, last_name, organisation_name, idSector, town,address1, address2, postcode, email, phone_number, fax');
 		    $this -> db -> from('employer'); 
 		    $this -> db -> where('idEmployer', $idEmployer);
 		    
@@ -41,7 +41,7 @@ Class Employer extends CI_Model
 				$this->first_name = $row->first_name;
 				$this->last_name = $row->last_name;
 				$this->organisation_name= $row->organisation_name;
-				$this->sector= $row->sector;
+				$this->sector= $row->idSector;
 				$this->town= $row->town;
 				$this->address1= $row->address1;
 				$this->address2= $row->address2;
@@ -136,7 +136,7 @@ Class Employer extends CI_Model
 	
 	function SelectAll()
 	{
-		$this -> db -> select('idEmployer, first_name, last_name, organisation_name, sector, town,address1, address2, postcode, email, phone_number, fax');
+		$this -> db -> select('idEmployer, first_name, last_name, organisation_name, idSector, town,address1, address2, postcode, email, phone_number, fax');
 		$this -> db -> from('employer'); 
 	    $query = $this -> db -> get();
 
@@ -149,7 +149,7 @@ Class Employer extends CI_Model
 	{
 		$shaPassword = sha1($pass);
 		
-		$this -> db -> select('idEmployer, first_name, last_name, organisation_name, sector, town,address1, address2,
+		$this -> db -> select('idEmployer, first_name, last_name, organisation_name, idSector, town,address1, address2,
 		 postcode, email, phone_number, fax');
 		$this -> db -> from('employer');
 		$this -> db -> where('organisation_name', $user);
@@ -181,7 +181,7 @@ Class Employer extends CI_Model
 		
 		
 		$data = array( 'first_name'=> $first_name, 'last_name' =>$last_name , 'organisation_name'=> $organisation_name,
-		'password' => $shaPassword, 'sector'=> $sector
+		'password' => $shaPassword, 'idSector'=> $sector
 		, 'town'=> $town,'address1' => $address1, 'address2'=> $address2,
 		'postcode'=> $postcode,'email' => $email, 'phone_number'=> $phone_number,
 		'fax'=> $fax);

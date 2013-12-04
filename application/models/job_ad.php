@@ -158,6 +158,27 @@ Class job_ad extends CI_Model
 		
 		
 	}
+	/*
+	 * 
+	 */
+	 public function record_count()
+	 {
+        return $this->db->count_all('job_ad');
+     }
+ 
+     public function fetch_jobs($limit, $start) 
+     {
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('job_ad');
+ 
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return false;
+     } 
 	
 /******************************* INSERT FUNCTIONS ******************************************/
 

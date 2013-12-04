@@ -9,6 +9,7 @@ class Employers extends CI_Controller
 		$this->load->model('sector','',TRUE);
 		$this->load->model('job_ad','',TRUE);
 		$this->load->model('job_title','',TRUE);
+		$this->load->library("pagination");
 	}
 	
 	public function form()
@@ -135,7 +136,6 @@ class Employers extends CI_Controller
 		$this->form_validation->set_rules('salary_value', 'salary amount', 'trim|required|min_length[1]|xss_clean');
 		$this->form_validation->set_rules('salary_type', 'salary type', 'trim|required|min_length[1]|xss_clean');
 		$this->form_validation->set_rules('contract', 'contract type', 'trim|required|min_length[1]|xss_clean');
-		//TODO Discuss with Team members $this->form_validation->set_rules('sector', 'sector', 'trim|required|min_length[1]|xss_clean');
 		$this->form_validation->set_rules('education', 'education', 'trim|required|min_length[1]|xss_clean');
 		$this->form_validation->set_rules('experience', 'experience', 'trim|required|min_length[1]|xss_clean');
 		$this->form_validation->set_rules('job_description', 'job description', 'trim|required|min_length[1]|xss_clean');
@@ -194,5 +194,24 @@ class Employers extends CI_Controller
 				$this->load->view('employer_advert', $data);
 			}
   		}
+	}
+
+	public function searchCV()
+	{
+		// initialise an array 
+		$search_config = array();
+        $search_config["base_url"] = base_url() . "employers/searchCV";
+        $search_config["total_rows"] = $this->job_ad->record_count();
+        $search_config["per_page"] = 15;
+        $search_config["uri_segment"] = 3;
+ 
+        $this->pagination->initialize($search_config);
+ // public function fetch_jobs($limit, $start)
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data["results"] = $this->job_ad->fetch_jobs($search_config["per_page"], $page);
+        $data["links"] = $this->pagination->create_links();
+ 		
+ 		// load view with search results
+        $this->load->view("searchresults", $data);
 	}
 }

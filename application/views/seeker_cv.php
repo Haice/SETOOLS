@@ -13,10 +13,11 @@
 	
 	<body>
 		<div class="wrapper">
-			<span class="identity">Welcome <?php echo $jobseeker->getFirst_name(); ?> [<?php echo anchor('jobseekers/logout', 'logout'); ?>]</span>
+			<span class="identity">Welcome <?php echo $jobseeker->getFirst_name(); ?></span>
 			<ul id="tabs">
   				<li><?php echo anchor('jobseekers/dashboard', '<strong> Search Jobs </strong>', 'title="Candidate Job Search"'); ?></li>
   				<li><a href="#" title="Professional CV Builder" class="selected"><strong> Cv Builder </strong></a></li>
+  				<li><?php echo anchor('jobseekers/logout', '<strong> Sign Out</strong>', 'title="Logout"'); ?></li>
 			</ul>
 			<div class="tabContent">
 				<h3 align="center">Creating a Cv Couldn't be any easier... Just complete all the fields below and watch your CV take shape instantly!</h3>
@@ -188,6 +189,7 @@
 					</div>
 				</div>
 			</div>
+			<a style="color: #dedbde; text-decoration: none;" href="javascript:window.history.go(-1);"><strong>Back</strong></a>
 	  	</div>
 	  	<!-- Placed at the bottom to ensure page is loaded before message is displayed -->
 	  	<?php

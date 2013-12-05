@@ -10,3 +10,11 @@
   </div>
  </div>
 </body>
+
+
+<?php
+/**
+ * Variable Guide
+ * 
+ */
+?>

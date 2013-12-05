@@ -94,8 +94,10 @@ class Jobseekers extends CI_Controller
 	{
 		if($this->session->userdata('signed_in'))
 	   	{
+	   		$sectors = new sector();
 			$session_data = $this->session->userdata('signed_in');
 	     	$data['jobseeker'] = new jobseeker($session_data['id']);
+			$data['sectors'] = $sectors->SelectAll();
 	     	$this->load->view('seeker_search', $data);
 	   	}
 	   	else
@@ -493,24 +495,6 @@ class Jobseekers extends CI_Controller
 	{
 		$this->session->unset_userdata('signed_in');
 		redirect('login', 'refresh');
-	}
-	
-	public function searchJobs()
-	{
-		// initialise an array 
-		$search_config = array();
-        $search_config["base_url"] = base_url() . "jobseekers/searchJobs";
-        $search_config["total_rows"] = $this->job_ad->record_count();
-        $search_config["per_page"] = 15;
-        $search_config["uri_segment"] = 3;
- 
-        $this->pagination->initialize($search_config);
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data["results"] = $this->job_ad->fetch_jobs($search_config["per_page"], $page);
-        $data["links"] = $this->pagination->create_links();
- 		
- 		// load view with search results
-        $this->load->view("searchresults", $data);
 	}
 
 

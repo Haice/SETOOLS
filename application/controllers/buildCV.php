@@ -72,7 +72,10 @@ class buildCV extends CI_Controller
 		<style>$styleData</style>
 		</head>
 		<body>
-		<div id='cv'>
+		";
+		$mpdf->WriteHTML($cvData);
+		
+		$cvData = "<div id='cv'>
 			<div class='mainDetails'>
 				<div id='name'>
 					<h1>$firstname $lastname</h1>
@@ -81,120 +84,154 @@ class buildCV extends CI_Controller
 				</div>
 				<div class='clear'></div>
 			</div>
-			
-			<div id='mainArea'>
-				<section>
-					<article>
+			";
+		$mpdf->WriteHTML($cvData);
+		
+		if(!empty($summary))
+		{
+			$cvData = "<div id='mainArea'>
+					<section>
+							<div class='sectionTitle'>
+								<h1>Profile Summary</h1>
+							</div>
+							
+							<div class='sectionContent'>
+								<article>
+									<p>$summary</p>
+								</article>
+							</div>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($educationalData))
+		{
+			$cvData = "<section>
 						<div class='sectionTitle'>
-							<h1>Profile Summary</h1>
+							<h1>Education</h1>
+						</div>
+						
+						<div class='sectionContent'>";
+						// Insert Education History
+						foreach ($educationalData as $schoolDetails)
+						{
+							$cvData .= "<article>
+											<h2>$schoolDetails->name_of_institution, $schoolDetails->country_of_origin</h2>
+											<p class='subDetails'>$schoolDetails->start_date - $schoolDetails->end_date</p>
+											<p>$schoolDetails->type $schoolDetails->course_name [$schoolDetails->result]</p>
+										</article>
+										
+									   ";
+						}
+						$cvData .="						
+						</div>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($experienceData))
+		{
+			$cvData = "<section>
+						<div class='sectionTitle'>
+							<h1>Work Experience</h1>
+						</div>
+						
+						<div class='sectionContent'>";
+						// Insert Work Experience
+						foreach ($experienceData as $workDetails)
+						{
+							$cvData .= "<article>
+											<h2>$workDetails->position_name at $workDetails->name_of_organisation</h2>
+											<p class='subDetails'>$workDetails->start_date - $workDetails->end_date</p>
+											<p>$workDetails->key_duties</p>
+										</article>
+									   ";
+						}
+						$cvData .="
+						</div>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($qualificationData))
+		{
+			$cvData = "<section>
+						<div class='sectionTitle'>
+							<h1>Professional Qualifications</h1>
+						</div>
+						
+						<div class='sectionContent'>";
+						// Insert Professional Qualifications
+						foreach ($qualificationData as $qualificationDetails)
+						{
+							$cvData .= "<article>
+											<h2>$qualificationDetails->name</h2>
+											<p class='subDetails'>$qualificationDetails->awarding_body ($qualificationDetails->year_obtained)</p>
+											<p>[$qualificationDetails->result]</p>
+										</article>
+									   ";
+						}
+						$cvData .="
+						</div>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($skillData))
+		{
+			$cvData = "<section>
+						<div class='sectionTitle'>
+							<h1>Professional Skills</h1>
 						</div>
 						
 						<div class='sectionContent'>
-							<p>$summary</p>
+							<article>
+								<p class='subDetails'>";
+								// Insert Professional Skills
+								foreach ($skillData as $skillDetails)
+								{
+									$cvData .= "$skillDetails->name [$skillDetails->level]; ";
+								}
+						$cvData .="
+								</p>
+							</article>
 						</div>
-					</article>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
-					<div class='sectionTitle'>
-						<h1>Education</h1>
-					</div>
-					
-					<div class='sectionContent'>";
-					// Insert Education History
-					foreach ($educationalData as $schoolDetails)
-					{
-						$cvData .= "<article>
-										<h2>$schoolDetails->name_of_institution, $schoolDetails->country_of_origin</h2>
-										<p class='subDetails'>$schoolDetails->start_date - $schoolDetails->end_date</p>
-										<p>$schoolDetails->type $schoolDetails->course_name [$schoolDetails->result]</p>
-									</article>
-									
-								   ";
-					}
-					$cvData .="						
-					</div>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
-					<div class='sectionTitle'>
-						<h1>Work Experience</h1>
-					</div>
-					
-					<div class='sectionContent'>";
-					// Insert Work Experience
-					foreach ($experienceData as $workDetails)
-					{
-						$cvData .= "<article>
-										<h2>$workDetails->position_name at $workDetails->name_of_organisation</h2>
-										<p class='subDetails'>$workDetails->start_date - $workDetails->end_date</p>
-										<p>$workDetails->key_duties</p>
-									</article>
-								   ";
-					}
-					$cvData .="
-					</div>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
-					<div class='sectionTitle'>
-						<h1>Professional Qualifications</h1>
-					</div>
-					
-					<div class='sectionContent'>";
-					// Insert Professional Qualifications
-					foreach ($qualificationData as $qualificationDetails)
-					{
-						$cvData .= "<article>
-										<h2>$qualificationDetails->name</h2>
-										<p class='subDetails'>$qualificationDetails->awarding_body ($qualificationDetails->year_obtained)</p>
-										<p>[$qualificationDetails->result]</p>
-									</article>
-								   ";
-					}
-					$cvData .="
-					</div>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
-					<div class='sectionTitle'>
-						<h1>Professional Skills</h1>
-					</div>
-					
-					<div class='sectionContent'>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($interests))
+		{
+			$cvData = "<section>
 						<article>
-							<p class='subDetails'>";
-							// Insert Professional Skills
-							foreach ($skillData as $skillDetails)
-							{
-								$cvData .= "$skillDetails->name [$skillDetails->level]; ";
-							}
-					$cvData .="
-							</p>
+							<div class='sectionTitle'>
+								<h1>Interests</h1>
+							</div>
+							
+							<div class='sectionContent'>
+							<!-- Insert Personal Interests -->
+								<p>$interests</p>
+							</div>
 						</article>
-					</div>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
-					<article>
-						<div class='sectionTitle'>
-							<h1>Interests</h1>
-						</div>
-						
-						<div class='sectionContent'>
-						<!-- Insert Personal Interests -->
-							<p>$interests</p>
-						</div>
-					</article>
-					<div class='clear'></div>
-				</section>
-				
-				<section>
+						<div class='clear'></div>
+					</section>
+					";
+			$mpdf->WriteHTML($cvData);
+		}
+		
+		if(!empty($refereeData))
+		{
+		$cvData = "<section>
 					<div class='sectionTitle'>
 						<h1>Referees</h1>
 					</div>
@@ -215,17 +252,18 @@ class buildCV extends CI_Controller
 					</div>
 					<div class='clear'></div>
 				</section>
-			</div>
+				";
+			$mpdf->WriteHTML($cvData);
+		}
+			$cvData = "</div>
 		</div>
 		</body>
 		</html>";
-		/***********************/
-		
-		
-		
-		/***** Generate PDF, Ask User to Download their Computer and Redirect Back to Cv Builer Page *****/
 		$mpdf->WriteHTML($cvData);
-		$fileLocation = "./resumes/".$firstname."_".$lastname."_CV.pdf";
+		/***********************/			
+		
+		/***** Save a copy of the PDF file to the server, Ask User to Download their Computer and Redirect Back to Cv Builer Page *****/
+		$fileLocation = "./resumes/".$id.".pdf";
 		$mpdf->Output($fileLocation, 'F');
 		
 		$downloadData =  file_get_contents($fileLocation);

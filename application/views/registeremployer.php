@@ -103,7 +103,7 @@
 			
 			<p>Organisation sector
 			<select name="sector">
-				<option>Chose a sector..</option>
+				<option>Choose a sector..</option>
 				<?php
 					foreach ($sectors as $sector)
 					{
@@ -124,6 +124,7 @@
          </div>		
 		
 	  </div>
+	  <a style="color: #dedbde; text-decoration: none;" href="javascript:window.history.go(-1);"><strong>Back</strong></a>
 	</div>
 <?php
 	/** Display errors resulting from login attempt **/

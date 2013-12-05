@@ -92,9 +92,10 @@ class Employers extends CI_Controller
 	{
 		if($this->session->userdata('signed_in'))
 	   	{
-	   		
+	   		$sectors = new sector();
 			$session_data = $this->session->userdata('signed_in');
 	     	$data['employer'] = new employer($session_data['id']);
+			$data['sectors'] = $sectors->SelectAll();
 	     	$this->load->view('employer_search', $data);
 	   	}
 	   	else
@@ -196,21 +197,20 @@ class Employers extends CI_Controller
   		}
 	}
 
-	public function searchCV()
+	public function searchSeekers()
 	{
 		// initialise an array 
 		$search_config = array();
-        $search_config["base_url"] = base_url() . "employers/searchCV";
+        $search_config["base_url"] = base_url() . "employers/searchSeekers";
         $search_config["total_rows"] = $this->job_ad->record_count();
         $search_config["per_page"] = 15;
         $search_config["uri_segment"] = 3;
  
         $this->pagination->initialize($search_config);
- // public function fetch_jobs($limit, $start)
+ 		// public function fetch_jobs($limit, $start)
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $data["results"] = $this->job_ad->fetch_jobs($search_config["per_page"], $page);
         $data["links"] = $this->pagination->create_links();
-		//TODO $data["from"] = "employer";
  		
  		// load view with search results
         $this->load->view("searchresults", $data);

@@ -7,16 +7,17 @@
 	
 	<body>
 		<div class="wrapper">
-			<span class="identity">Welcome <?php echo $employer->getFirst_name(); ?> [<?php echo anchor('employers/logout', 'logout'); ?>]</span>
+			<span class="identity">Welcome <?php echo $employer->getFirst_name(); ?></span>
 			<ul id="tabs">
   				<li><?php echo anchor('employers/dashboard', '<strong> Search Candidates </strong>', 'title="Employer Candidate Search"'); ?></li>
   				<li><a class="selected" title="Manage Job Adverts" href="#"><strong> Job Adverts </strong></a></li>
+  				<li><?php echo anchor('employers/logout', '<strong> Sign Out</strong>', 'title="Logout"'); ?></li>
 			</ul>
 			<div class="tabContent">
 				<h2 align="center">Create Job Adverts</h2>
 				<div class="container">
 					<?php echo form_open('employers/createAdvert'); ?>
-						<div class="left" style="margin: 0 50px 0 0;">
+						<div class="left" style="margin: 0 150px 0 100px;">
 							<div style="float: left;">
 							Job Title: <input style="width: 300px;" type="text" name="title"/><br /><br />
 							Location: <input style="width: 300px;" type="text" name="location" placeholder="E.g. Surbiton, Surrey UK"/>
@@ -51,18 +52,6 @@
 							<div class="clear"><br /></div>
 						</div>
 						<div class="middle">
-							Sector:<br />
-							<span style="color: black;">
-								<?php
-									foreach ($sectors as $sector)
-									{
-										echo "<input type='radio' name='sector' value='$sector->idSector'>$sector->name<br />
-								";
-									}
-								?>
-	   		   				</span><br />
-						</div>
-						<div class="left" style="margin: 0; text-align: left;">
 							<span id="section">Educational level</span>
                				<select name="education">
                					<option value="">Choose...</option>
@@ -74,18 +63,20 @@
 							<br /><br />
 							<span id="section">Minimum Experience</span>
             	  			<span style="color:black;">
-            	  				<input type="radio" name="experience" value="">None<br />
-								<input type="radio" name="experience" value="1">1 Year<br />
-								<input type="radio" name="experience" value="2">2 Years<br />
-								<input type="radio" name="experience" value="3">3 Years<br />
-								<input type="radio" name="experience" value="4">4 Years<br />
-								<input type="radio" name="experience" value="5">5 Years<br />
-								<input type="radio" name="experience" value="6">6 Years<br />
-								<input type="radio" name="experience" value="7">7 Years<br />
-								<input type="radio" name="experience" value="8">8 Years<br />
-								<input type="radio" name="experience" value="9">9 Years<br />
-								<input type="radio" name="experience" value="10">10+ Years
+            	  				<input type="radio" name="experience" value="None">None<br />
+								<input type="radio" name="experience" value="One Year">1 Year<br />
+								<input type="radio" name="experience" value="Two Years">2 Years<br />
+								<input type="radio" name="experience" value="Three Years">3 Years<br />
+								<input type="radio" name="experience" value="Four Years">4 Years<br />
+								<input type="radio" name="experience" value="Five Years">5 Years<br />
+								<input type="radio" name="experience" value="Six Years">6 Years<br />
+								<input type="radio" name="experience" value="Seven to Ten Years">7-10 Years<br />
+								<input type="radio" name="experience" value="Eleven to Fifteen">11-15 Years<br />
+								<input type="radio" name="experience" value="Above Fifteen">15+ Years<br />
 							</span>
+						</div>
+						<div class="left" style="margin: 0; text-align: left;">
+							
 						</div>
 						<div class="clear"></div>
 						<br />
@@ -102,6 +93,7 @@
 					</form>
 				</div>
 			</div>
+			<a style="color: #dedbde; text-decoration: none;" href="javascript:window.history.go(-1);"><strong>Back</strong></a>
 	  	</div>
 	  	<?php
 	  		if (isset($message))

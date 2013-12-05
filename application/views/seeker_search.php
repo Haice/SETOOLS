@@ -7,21 +7,22 @@
 	
 	<body onload="load()">
 		<div class="wrapper">
-			<span class="identity">Welcome <?php echo $jobseeker->getFirst_name(); ?> [<?php echo anchor('jobseekers/logout', 'logout'); ?>]</span>
+			<span class="identity">Welcome <?php echo $jobseeker->getFirst_name(); ?></span>
 			<ul id="tabs">
   				<li><a href="#" title="Candidate Job Search" class="selected"><strong> Search Jobs </strong></a></li>
   				<li><?php echo anchor('jobseekers/build_cv', '<strong> Cv Builder </strong>', 'title="Professional CV Builder"'); ?></li>
+  				<li><?php echo anchor('jobseekers/logout', '<strong> Sign Out</strong>', 'title="Logout"'); ?></li>
 			</ul>
 			<div class="tabContent">
 				<h2 align="center">Search Jobs on Zont</h2>
 				<div class="container">
 					<form name="input" action="" method="post">
 						<div class="left">
-							Keyword: <input type="text" name="keyword"/><br /><br />
+							Keywords: <input style="width:180px;" type="text" name="keyword" placeholder=" e.g. Employer Name"/><br /><br />
 							
-							Job: <input type="text" name="job"/><br /><br />
+							Job Title: <input style="width:180px;" type="text" name="job"/><br /><br />
 							
-							Location: <input type="text" name="location"/><br /><br />
+							Location: <input style="width:180px;" type="text" name="location"/><br /><br />
 							
 							<div style="float: left;">Salary: </div>
 							<div style="text-align: right;">
@@ -45,18 +46,12 @@
 						<div class="middle">
 							<span id="section">Sector</span>
 	   		   				<span style="color: black;">
-					   		    <input type="checkbox" name="sector" value="Finance">Finance<br />
-				                <input type="checkbox" name="sector" value="Aviation">Aviation<br /> 
-				                <input type="checkbox" name="sector" value="Consultancy">Consultancy<br />
-				                <input type="checkbox" name="sector" value="Education">Education<br /> 
-				               	<input type="checkbox" name="sector" value="IT">Information Technology<br />
-				               	<input type="checkbox" name="sector" value="Engineering">Engineering<br /> 
-				               	<input type="checkbox" name="sector" value="Management">Management<br />
-				                <input type="checkbox" name="sector" value="Marketing">Marketing<br /> 
-				               	<input type="checkbox" name="sector" value="Recruitment">Recruitment<br />
-				               	<input type="checkbox" name="sector" value="Retail">Retail<br /> 
-				               	<input type="checkbox" name="sector" value="Sales">Sales<br />
-				               	<input type="checkbox" name="sector" value="Science">Science<br /> 
+	   		   					<?php
+									foreach ($sectors as $sector)
+									{
+										echo "<input type='checkbox' name='sectors' value='$sector->idSector'>$sector->name<br />";
+									}
+								?>
 							</span><br />
                				
                				<span id="section">Educational level</span>
@@ -71,16 +66,16 @@
 						<div class="right">
 							<span id="section">Years of work experience</span>
             	  			<span style="color:black;">
-            	  				<input type="radio" name="experience" value="none">None<br />
-								<input type="radio" name="experience" value="one">1 Year<br />
-								<input type="radio" name="experience" value="two">2 Years<br />
-								<input type="radio" name="experience" value="three">3 Years<br />
-								<input type="radio" name="experience" value="four">4 Years<br />
-								<input type="radio" name="experience" value="five">5 Years<br />
-								<input type="radio" name="experience" value="six">6 Years<br />
-								<input type="radio" name="experience" value="seven">7-10 Years<br />
-								<input type="radio" name="experience" value="eleven">11-15 Years<br />
-								<input type="radio" name="experience" value="fifteen">15+ Years<br />
+            	  				<input type="radio" name="experience" value="None">None<br />
+								<input type="radio" name="experience" value="One Year">1 Year<br />
+								<input type="radio" name="experience" value="Two Years">2 Years<br />
+								<input type="radio" name="experience" value="Three Years">3 Years<br />
+								<input type="radio" name="experience" value="Four Years">4 Years<br />
+								<input type="radio" name="experience" value="Five Years">5 Years<br />
+								<input type="radio" name="experience" value="Six Years">6 Years<br />
+								<input type="radio" name="experience" value="Seven to Ten Years">7-10 Years<br />
+								<input type="radio" name="experience" value="Eleven to Fifteen">11-15 Years<br />
+								<input type="radio" name="experience" value="Above Fifteen">15+ Years<br />
 							</span><br />
 						</div>
 						
@@ -93,5 +88,6 @@
 					</form>
 				</div>
 			</div>
+			<a style="color: #dedbde; text-decoration: none;" href="javascript:window.history.go(-1);"><strong>Back</strong></a>
 	  	</div>
 	</body>

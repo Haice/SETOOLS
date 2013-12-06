@@ -9,6 +9,7 @@ class Employers extends CI_Controller
 		$this->load->model('sector','',TRUE);
 		$this->load->model('job_ad','',TRUE);
 		$this->load->model('job_title','',TRUE);
+		$this->load->model('jobseeker','',TRUE);
 		$this->load->library("pagination");
 	}
 	
@@ -174,7 +175,7 @@ class Employers extends CI_Controller
 	 			$this->input->post('experience'),
 	 			$this->input->post('contract'),
 	 			$this->input->post('user_id'),
-	 			$this->input->post($job_id)
+	 			$job_id
 			);
 			
 			if ($result != -1)
@@ -199,20 +200,73 @@ class Employers extends CI_Controller
 
 	public function searchSeekers()
 	{
-		// initialise an array 
+		/***** Initialise variables *****/
+		$session_data = $this->session->userdata('signed_in');
+		$criteria = "";		
+		/*******************************/
+		/***** Pass form data *****/
+		$keywords = $this->input->post('keywords');
+		if(!empty($keywords))
+		{
+			$criteria .= $keywords; 
+		}
+		
+		$location = $this->input->post('location');
+		if(!empty($location))
+		{
+			$criteria .= $location; 
+		}
+		$salary = $this->input->post('salary');
+		if(!empty($salary))
+		{
+			$criteria .= $salary; 
+		}
+		$salary_type = $this->input->post('salary_type');		
+		if(!empty($salary_type))
+		{
+			$criteria .= $salary_type; 
+		}	
+		$contract = $this->input->post('contract');
+		if(!empty($contract))
+		{
+			$criteria .= $contract; 
+		}
+		$education =$this->input->post('educational_level');
+		if(!empty($education))
+		{
+			$criteria .= $education; 
+		}
+		$experience = $this->input->post('experience');
+		if(!empty($experience))
+		{
+			$criteria .= $experience; 
+		}
+		/**************************/
+		
+		/***** Conduct Search *****/
 		$search_config = array();
-        $search_config["base_url"] = base_url() . "employers/searchSeekers";
-        $search_config["total_rows"] = $this->job_ad->record_count();
-        $search_config["per_page"] = 15;
+        $search_config["base_url"] = base_url() . "index.php/employers/searchSeekers";
+        $search_config["total_rows"] = $this->jobseeker->fetch_jobseekers(5, null, $criteria, "counter");
+	   /* I Customised fetch_jobseekers query in the jobseeker model so that 
+	    * I wouldnt have to create a whole new method to
+	    * fetch the amount of search results needed for page numbering
+	    */
+						    
+		$search_config["per_page"] = 5;
         $search_config["uri_segment"] = 3;
  
         $this->pagination->initialize($search_config);
- 		// public function fetch_jobs($limit, $start)
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data["results"] = $this->job_ad->fetch_jobs($search_config["per_page"], $page);
-        $data["links"] = $this->pagination->create_links();
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		$data["results"] = $this->jobseeker->fetch_jobseekers(5, $page, $criteria, null);
+	   /* I Customised fetch_jobseekers query in the jobseeker model so that 
+	    * I wouldnt have to create a whole new method to
+	    * fetch the amount of search results needed for page numbering
+	    */
+		$data["links"] = $this->pagination->create_links();
+     	$data['employer'] = new employer($session_data['id']);
  		
  		// load view with search results
-        $this->load->view("searchresults", $data);
+        $this->load->view("employer_results", $data);
 	}
 }

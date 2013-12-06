@@ -13,6 +13,8 @@ class Jobseekers extends CI_Controller
 		$this->load->model('referee','',TRUE);
 		$this->load->model('sector','',TRUE);
 		$this->load->model('job_title','',TRUE);
+		$this->load->model('job_ad','',TRUE);
+		$this->load->library("pagination");
 	}
 
 
@@ -78,7 +80,7 @@ class Jobseekers extends CI_Controller
 				$session_array = array('id' => $userID, 'username' => $userTag);
        			$this->session->set_userdata('signed_in', $session_array);
 				
-				redirect('jobseekers/dashboard', 'refresh');
+				redirect('jobseekers/build_cv', 'refresh');
 			}
 			else  
 			{ // Registration Failed... Send info back to login page
@@ -496,11 +498,89 @@ class Jobseekers extends CI_Controller
 		$this->session->unset_userdata('signed_in');
 		redirect('login', 'refresh');
 	}
-
-
+	
+	public function searchJobs()
+	{
+		/***** Initialise variables *****/
+		$session_data = $this->session->userdata('signed_in');
+		
+		$job_title = null;
+		$start_date = null;
+		$end_date = null;
+		$location = null;
+		$description = null;
+		$salary_amount = null;
+		$salary_type = null;
+		$educational_level = null;
+		$years_of_experience = null;
+		$contract_type = null;
+		/*******************************/
+		/***** Pass form data *****/
+		$_description = $this->input->post('keywords'); 
+		if(!empty($_description))
+			$description = $_description;
+		
+		$_job_title = $this->input->post('job');
+		if(!empty($_job_title))
+			$job_title = $_job_title;
+		
+		$_location = $this->input->post('location');
+		if(!empty($_location))
+			$location = $_location;
+		
+		$_salary_amount = $this->input->post('salary');
+		if(!empty($_salary_amount))
+			$salary_amount = $_salary_amount;
+		
+		$_salary_type = $this->input->post('salary_type');
+		if(!empty($_salary_type))
+			$salary_type = $_salary_type;
+			
+		$_contract_type = $this->input->post('contract');
+		if(!empty($_contract_type))
+			$contract_type = $_contract_type;
+		
+		$_educational_level = $this->input->post('educational_level');
+		if(!empty($_educational_level))
+			$educational_level = $_educational_level;
+		
+		$_years_of_experience = $this->input->post('experience');
+		if(!empty($_years_of_experience))
+			$years_of_experience = $_years_of_experience;
+		
+		/***** Conduct Search *****/
+		$search_config = array();
+        $search_config["base_url"] = base_url() . "index.php/jobseekers/searchJobs";
+        $search_config["total_rows"] = $this->job_ad->fetch_jobs(5, null, $start_date,
+						   $end_date, $location, $description, $salary_amount, $salary_type, 
+						   $educational_level, $years_of_experience, $contract_type, $job_title, "counter");
+	   /* I Customised fetch_jobs query in the job_ad model so that 
+	    * I wouldnt have to create a whole new method to
+	    * fetch the amount of search results needed for page numbering
+	    */
+						    
+		$search_config["per_page"] = 5;
+        $search_config["uri_segment"] = 3;
+ 
+        $this->pagination->initialize($search_config);
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		$data["results"] = $this->job_ad->fetch_jobs(5, $page, $start_date,
+						   $end_date, $location, $description, $salary_amount, $salary_type, 
+						   $educational_level, $years_of_experience, $contract_type, $job_title, null);
+	   /* I Customised fetch_jobs query in the job_ad model so that 
+	    * I wouldnt have to create a whole new method to
+	    * fetch the amount of search results needed for page numbering
+	    */
+		$data["links"] = $this->pagination->create_links();
+     	$data['jobseeker'] = new jobseeker($session_data['id']);
+ 		
+ 		// load view with search results
+        $this->load->view("seeker_results", $data);
+	}
 
 	
-	function pre_load()		// Cv Builder Page - Handles Job Seeker's Pre-Stored Data 
+ 	function pre_load()		// Cv Builder Page - Handles Job Seeker's Pre-Stored Data 
 	{
 		$session_data = $this->session->userdata('signed_in');
 		$seeker_id = $session_data['id'];

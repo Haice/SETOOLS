@@ -16,34 +16,34 @@
 			<div class="tabContent">
 				<h2 align="center">Search Candidates on Zont</h2>
 				<div class="container">
-					<form name="input" action="" method="get">
+					<?php echo form_open('employers/searchSeekers'); ?>
 						<div class="left" style="margin-left: 150px;">
-							Keywords: <input style="width:180px;" type="text" name="keyword" placeholder=" e.g. Skills or Qualifications"/><br /><br />
+							Keywords: <input style="width:180px;" type="text" name="keywords" placeholder=" e.g. Skills or Qualifications"/><br /><br />
 							
 							Location: <input style="width:187px;" type="text" name="location"/><br /><br />
 							
 							<div style="float: left;">Minimum Salary: </div>
 							<div style="text-align: right;">
 								<!-- <input style="width:65px;" type="text" name="min_salary" placeholder="Min" /> -->
-								&pound; <input style="width:108px;" type="text"name="max_salary" placeholder=" " />
+								&pound; <input style="width:108px;" type="text"name="salary" placeholder=" " />
 							</div>
 							<span style="color:black;">
-	   		   					<input type="checkbox" name="salary" value="Hourly">Hourly
-               					<input type="checkbox" name="salary" value="Daily">Daily
-               					<input type="checkbox" name="salary" value="Annually">Annually<br />
+	   		   					<input type="radio" name="salary_type" value="Hourly">Hourly
+               					<input type="radio" name="salary_type" value="Daily">Daily
+               					<input type="radio" name="salary_type" value="Annually">Annually<br />
            					</span><br/>
             					   		
 	   						<div style="float: left;">Contract Type: </div>
 	   						<div style="text-align: right;">
 	   						<span style="color:black;">
-	   		   					<input type="checkbox" name="contract" value="Part_time">Part-time<br />
-				               	<input type="checkbox" name="contract" value="Temporary">Temporary
-				               	<input type="checkbox" name="contract" value="Permanent">Permanent
+	   		   					<input type="radio" name="contract" value="Part_time">Part-time<br />
+				               	<input type="radio" name="contract" value="Temporary">Temporary
+				               	<input type="radio" name="contract" value="Permanent">Permanent
 				            </span></div>
 						</div>
 						<div class="middle">
 							<span id="section">Educational level</span>
-               				<select name="Educational level">
+               				<select name="educational_level">
                					<option value="">Choose...</option>
 			                 	<option value="postgrad">Postgraduate Qualification</option>
 			                 	<option value="bsc">Bachelors degree</option>

@@ -21,6 +21,7 @@
 			</ul>
 			<div class="tabContent">
 				<h3 align="center">Creating a Cv Couldn't be any easier... Just complete all the fields below and watch your CV take shape instantly!</h3>
+				<h5 align="center">Please note that candidates without cv wouldn't appear in employer search</h5>
 				<div class="container">
 					<div class="inner-wrapper">
 							<div id="summary">

@@ -158,19 +158,64 @@ Class job_ad extends CI_Model
 		
 		
 	}
-	/*
-	 * 
-	 */
 	 public function record_count()
 	 {
         return $this->db->count_all('job_ad');
      }
  
-     public function fetch_jobs($limit, $start) 
-     {
-        $this->db->limit($limit, $start);
-        $query = $this->db->get('job_ad');
- 
+    public function fetch_jobs($limit, $start, $start_date, $end_date, $location, $description, $salary_amount, $salary_type, $educational_level, $years_of_experience, $contract_type, $job_title, $purpose)
+	{
+		if ($purpose == NULL)
+			$this->db->limit($limit, $start);
+		$this -> db -> select('idJobAd, start_date, end_date, location, description, salary_amount,salary_type, educational_level, years_of_experience, contract_type, idEmployer, job_title.name');
+		$this -> db -> from('job_ad');
+		$this -> db -> join('job_title', 'job_ad.idJobTitle = job_title.idJobTitle');
+		if ($start_date != NULL)
+		{
+			$this -> db -> where('start_date >=', $start_date);
+		}
+		if ($end_date != NULL)
+		{
+			$this -> db -> where('end_date <=', $end_date);
+		}
+		if ($location != NULL)
+		{
+			$this -> db -> like('location', $location);
+		}
+		if ($description != NULL)
+		{
+			$this -> db -> like('description', $description);
+		}
+		if ($salary_amount != NULL)
+		{
+			$this -> db -> where('salary_amount >=' , $salary_amount);
+		}
+		if ($salary_type != NULL)
+		{
+			$this -> db -> where('salary_type' , $salary_type);
+		}
+		if ($educational_level != NULL)
+		{
+			$this -> db -> where('educational_level' , $educational_level);
+		}
+		if ($years_of_experience != NULL)
+		{
+			$this -> db -> where('years_of_experience', $years_of_experience);
+		}
+		if ($contract_type != NULL)
+		{
+			$this -> db -> where ('contract_type', $contract_type);
+		}
+		if ($job_title != NULL)
+		{
+			$this -> db -> like ('job_title.name', $job_title);
+		}
+		
+	    $query = $this -> db -> get();
+		
+ 		if ($purpose != NULL)
+			return $query->num_rows();
+		
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $data[] = $row;

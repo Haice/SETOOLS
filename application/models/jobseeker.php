@@ -170,7 +170,7 @@ Class JobSeeker extends CI_Model
 		$shaPassword = sha1($pass);
 		
 		$this -> db -> select('idJobSeeker, username, title, first_name, last_name, 
-		date_of_birth,address1, address2, town, postcode, country, email, phone_number, eligibility_to_work');//, description');
+		date_of_birth,address1, address2, town, postcode, country, email, phone_number, eligibility_to_work, description');
 		$this -> db -> from('job_seeker');
 		$this -> db -> where('username', $user);
 		$this -> db -> where('password', $shaPassword);
@@ -246,5 +246,47 @@ Class JobSeeker extends CI_Model
 		
 		return $this->db->affected_rows() > 0 ? 1 : -1;
 	}
+	
+	/***** Search Functions *****/
+	public function record_count()
+	{
+        return $this->db->count_all('job_seeker');
+    }
+	 
+	function fetch_jobseekers($limit, $start, $keyword, $purpose)
+	{
+		if ($purpose == NULL)
+			$this->db->limit($limit, $start);
+		$this -> db -> select('job_seeker.idJobSeeker, username, title, first_name, last_name, 
+		date_of_birth,address1, address2, town, postcode, country, email, phone_number, eligibility_to_work, description');
+		$this -> db -> from('job_seeker');
+		$this -> db -> join('work_experience', 'work_experience.idJobSeeker = job_seeker.idJobSeeker');
+		$this -> db -> join('skill', 'skill.idJobSeeker = job_seeker.idJobSeeker');
+		$this -> db -> join('educational_qualification', 'educational_qualification.idJobSeeker = job_seeker.idJobSeeker');
+		$this -> db -> join('professional_qualifications', 'professional_qualifications.idJobSeeker = job_seeker.idJobSeeker');
+		$this -> db -> like('description', $keyword);
+		$this -> db -> or_like('skill.name', $keyword);
+		$this -> db -> or_like('interests', $keyword);
+		$this -> db -> or_like('town', $keyword);
+		$this -> db -> or_like('educational_qualification.course_name', $keyword);
+		$this -> db -> or_like('work_experience.position_name', $keyword);
+		$this -> db -> or_like('professional_qualifications.name', $keyword);
+	    
+
+	    $query = $this -> db -> get();
+		
+		if ($purpose != NULL)
+			return $query->num_rows();
+ 
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return false;
+	}
+	/****************************/
 }
+
 ?>

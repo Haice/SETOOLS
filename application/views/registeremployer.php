@@ -55,11 +55,11 @@
 			
 			<p>Title: 
 			<select style="width:50px;" name="title">
-				<option>Mr</option>
-			    <option>Mrs</option>
-			    <option>Miss</option>
-			    <option>Dr</option>
-			    <option>Other</option>	
+				<option value="Mr.">Mr</option>
+			    <option value="Mrs.">Mrs</option>
+			    <option value="Miss.">Miss</option>
+			    <option value="Dr.">Dr</option>
+			    <option value="Other">Other</option>	
 		    </select></p>
 		    
 		    <br />

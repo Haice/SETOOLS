@@ -6,11 +6,11 @@
 			<span style="float:left; text-align: right">
 				<input type="hidden" name="user_id" value="<?php echo $jobseeker->getId() ?>" />
 				Title: <select style="width:50px;" name="referee_title">
-							<option>Mr</option>
-							<option>Mrs</option>
-							<option>Miss</option>
-							<option>Dr</option>
-							<option>Other</option>	
+							<option value="Mr.">Mr</option>
+						    <option value="Mrs.">Mrs</option>
+						    <option value="Miss.">Miss</option>
+			    			<option value="Dr.">Dr</option>
+			    			<option value="Other">Other</option>	
 					   </select><br /><br />
 				Last Name: <input style="width:200px;"  type="text" name="referee_lastname" /><br /><br />
 				Phone Number: <input style="width:200px;" type="text" name="referee_phone" /><br /><br />

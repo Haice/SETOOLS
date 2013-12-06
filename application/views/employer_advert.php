@@ -45,7 +45,7 @@
 							<div style="float: left;">
 							Contract Type:
 							<span style="color:black;">
-	   		   					<input type="radio" name="contract" value="Part_time">Part-time
+	   		   					<input type="radio" name="contract" value="Part-Time">Part-Time
 				               	<input type="radio" name="contract" value="Temporary">Temporary
 				               	<input type="radio" name="contract" value="Permanent">Permanent
 				            </span></div>

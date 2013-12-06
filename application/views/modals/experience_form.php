@@ -6,7 +6,7 @@
 			<span style="float:left; text-align: right">
 				<input type="hidden" name="user_id" value="<?php echo $jobseeker->getId() ?>" />
 			 	Organisation Name: <input type="text" name="organisation_name" required /><br /><br />
-			 	Job Title: <select name="job_id">
+			 	Job Title: <select style="width: 250px;" name="job_id">
 							<option>Select a Title..</option>
 								<?php
 									foreach ($jobs as $job)
